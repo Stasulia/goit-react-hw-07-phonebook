@@ -18,9 +18,9 @@ export const getContactsThunk = createAsyncThunk(
 
 export const addContactThunk = createAsyncThunk(
   'contacts/addContact',
-  async (data, { rejectWithValue }) => {
+  async (contact, { rejectWithValue }) => {
     try {
-      return await createContactApi(data);
+      return await createContactApi(contact);
     } catch (error) {
       return rejectWithValue(error.response.data);
     }

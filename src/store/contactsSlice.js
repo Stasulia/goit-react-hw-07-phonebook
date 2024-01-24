@@ -24,7 +24,7 @@ const contactsSlice = createSlice({
   initialState: {
     items: [],
     isLoading: false,
-    error: null,
+    error: '',
   },
   extraReducers: builder => {
     builder
@@ -37,16 +37,10 @@ const contactsSlice = createSlice({
       .addCase(deleteContactThunk.fulfilled, (state, { payload }) => {
         state.items = state.items.filter(el => el.id !== payload.id);
       })
+      .addMatcher(action => action.type.endsWith('/pending'), handlePending)
+      .addMatcher(action => action.type.endsWith('/rejected'), handleRejected)
       .addMatcher(
-        ({ action }) => action.type.endsWith('/pending'),
-        handlePending
-      )
-      .addMatcher(
-        ({ action }) => action.type.endsWith('/rejected'),
-        handleRejected
-      )
-      .addMatcher(
-        ({ action }) => action.type.endsWith('/fulfilled'),
+        action => action.type.endsWith('/fulfilled'),
         handleFulfilled
       );
   },
