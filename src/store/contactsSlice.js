@@ -1,9 +1,10 @@
-const { createSlice } = require('@reduxjs/toolkit');
-const {
-  getContactsThunk,
+import {
   addContactThunk,
   deleteContactThunk,
-} = require('./thunks');
+  getContactsThunk,
+} from './thunks';
+
+const { createSlice } = require('@reduxjs/toolkit');
 
 const handlePending = state => {
   state.isLoading = true;
@@ -22,20 +23,22 @@ const handleFulfilled = state => {
 const contactsSlice = createSlice({
   name: 'contacts',
   initialState: {
-    contacts: [],
+    items: [],
     isLoading: false,
     error: '',
   },
   extraReducers: builder => {
     builder
       .addCase(getContactsThunk.fulfilled, (state, { payload }) => {
-        state.contacts = payload.contacts;
+        state.contacts.items = payload;
       })
       .addCase(addContactThunk.fulfilled, (state, { payload }) => {
-        state.contacts.push(payload);
+        state.contacts.items.push(payload);
       })
       .addCase(deleteContactThunk.fulfilled, (state, { payload }) => {
-        state.contacts = state.contacts.filter(el => el.id !== payload.id);
+        state.contacts.items = state.contacts.items.filter(
+          el => el.id !== payload.id
+        );
       })
       .addMatcher(
         ({ action }) => action.type.endsWith('/pending'),
