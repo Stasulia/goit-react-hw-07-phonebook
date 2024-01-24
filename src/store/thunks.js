@@ -6,7 +6,7 @@ import {
 } from 'Service/ContactsApi';
 
 export const getContactsThunk = createAsyncThunk(
-  'contacts/getContacts',
+  'contacts/fetchAll',
   async (_, { rejectWithValue }) => {
     try {
       return await getContactsApi();
@@ -18,9 +18,9 @@ export const getContactsThunk = createAsyncThunk(
 
 export const addContactThunk = createAsyncThunk(
   'contacts/addContact',
-  async (body, { rejectWithValue }) => {
+  async (data, { rejectWithValue }) => {
     try {
-      return await createContactApi(body);
+      return await createContactApi(data);
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
